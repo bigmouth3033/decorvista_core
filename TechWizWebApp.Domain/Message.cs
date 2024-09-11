@@ -16,6 +16,6 @@ namespace TechWizWebApp.Domain
 
         public string From { get; set; } // Admin, Customer
 
-        public User? Customer { get; set; }
+        public virtual User? Customer { get; set; }
     }
 }

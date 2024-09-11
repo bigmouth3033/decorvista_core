@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechWizWebApp.Data;
 
@@ -11,9 +12,11 @@ using TechWizWebApp.Data;
 namespace TechWizWebApp.Migrations
 {
     [DbContext(typeof(TechwizDbContext))]
-    partial class TechwizDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240911133050_status_user")]
+    partial class status_user
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json.Serialization;
 using TechWizWebApp.Data;
 using TechWizWebApp.Interfaces;
 using TechWizWebApp.Repositories;
@@ -12,13 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddScoped<IFileService,FileService>();
-builder.Services.AddScoped<IMailService, MailService>();
-
 builder.Services.AddDbContext<TechwizDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddControllers().AddJsonOptions(x =>
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -54,7 +56,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
+builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddTransient<IAuthAdmin, AuthAdminRepo>();
+builder.Services.AddTransient<IEmployeeAdmin, EmployeeAdminRepo>();
 
 
 var app = builder.Build();

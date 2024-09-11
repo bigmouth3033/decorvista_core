@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TechWizWebApp.Domain
 {
-    internal class CustomPaging
+    public class CustomPaging
     {
         public int Status { get; set; }
 

@@ -14,6 +14,8 @@ namespace TechWizWebApp.Data
 
         public DbSet<Message> Messages { get; set; }
 
+        public DbSet<Permission> Permissions { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -22,6 +24,8 @@ namespace TechWizWebApp.Data
             modelBuilder.Entity<User>(options =>
             {
                 options.HasMany(u => u.Messages).WithOne(m => m.Customer).HasForeignKey(m => m.CustomerId);
+
+                options.HasOne(u => u.Permission).WithOne(p => p.User).HasForeignKey<Permission>(p => p.EmployeeId);
 
                 options.HasData([
                       new User{
@@ -33,6 +37,9 @@ namespace TechWizWebApp.Data
                       Role = "Admin",
                       },
                     ]);
+
+                options.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
+                options.Property(e => e.UpdatedAt).HasDefaultValueSql("GETDATE()");
             });
 
         }

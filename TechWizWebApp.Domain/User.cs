@@ -28,11 +28,15 @@ namespace TechWizWebApp.Domain
 
         public bool IsEmailConfirmed { get; set; }
 
+        public bool IsActive { get; set; } = true;
+
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
 
-        public ICollection<Message> Messages { get; set; } = new List<Message>();
+        public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
+
+        public virtual Permission? Permission { get; set; }
 
 
         

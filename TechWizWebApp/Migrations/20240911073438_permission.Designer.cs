@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechWizWebApp.Data;
 
@@ -11,9 +12,11 @@ using TechWizWebApp.Data;
 namespace TechWizWebApp.Migrations
 {
     [DbContext(typeof(TechwizDbContext))]
-    partial class TechwizDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240911073438_permission")]
+    partial class permission
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,9 +124,6 @@ namespace TechWizWebApp.Migrations
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsEmailConfirmed")
                         .HasColumnType("bit");
 
@@ -154,7 +154,6 @@ namespace TechWizWebApp.Migrations
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@admin.com",
                             FullName = "Admin",
-                            IsActive = true,
                             IsEmailConfirmed = true,
                             Password = "$2a$12$9HwNZ8KCsja/JTshf7.kneBqU.R0+OUQcY5fnoAnAD52.f4ClBAf3i",
                             Role = "Admin",

@@ -29,16 +29,11 @@ namespace TechWizWebApp.Controllers
         [Route("admin_login")]
         public async Task<IActionResult> AdminLogin([FromForm] RequestLogin requestLogin)
         {
-            try
-            {
-                var customResult = await _authAdmin.AdminLogin(requestLogin.Email, requestLogin.Password);
 
-                return Ok(customResult);
-            }
-            catch (Exception ex)
-            {
-                return Ok(new CustomResult(400, "Bad Request", ex.Message));
-            }
+            var customResult = await _authAdmin.AdminLogin(requestLogin.Email, requestLogin.Password);
+
+            return Ok(customResult);
+
         }
 
 
@@ -47,19 +42,14 @@ namespace TechWizWebApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAdmin()
         {
-            try
-            {
-                var idClaim = User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
-                int.TryParse(idClaim, out int userId);
 
-                var customResult = await _authAdmin.GetAdmin(userId);
+            var idClaim = User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
+            int.TryParse(idClaim, out int userId);
 
-                 return Ok(customResult);
-            }
-            catch (Exception ex)
-            {
-                return Ok(new CustomResult(400, "Bad Request", ex.Message));
-            }
+            var customResult = await _authAdmin.GetAdmin(userId);
+
+            return Ok(customResult);
+
         }
 
 
