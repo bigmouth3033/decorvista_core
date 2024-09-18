@@ -5,15 +5,14 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
 using TechWizWebApp.Data;
-using TechWizWebApp.Interfaces;
-using TechWizWebApp.Repositories;
+using TechWizWebApp.Hubs;
 using TechWizWebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddDbContext<TechwizDbContext>(options =>
+builder.Services.AddDbContext<DecorVistaDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
@@ -22,6 +21,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
 );
 
+builder.Services.AddSignalR();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -58,8 +58,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IMailService, MailService>();
-builder.Services.AddTransient<IAuthAdmin, AuthAdminRepo>();
-builder.Services.AddTransient<IEmployeeAdmin, EmployeeAdminRepo>();
+
 
 
 var app = builder.Build();
@@ -80,6 +79,8 @@ app.UseStaticFiles(new StaticFileOptions
         Path.Combine(builder.Environment.ContentRootPath, "Images")),
     RequestPath = "/Images"
 });
+
+app.MapHub<ChatHub>("/chat");
 
 app.UseHttpsRedirection();
 

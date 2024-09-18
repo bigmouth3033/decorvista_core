@@ -1,50 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace TechWizWebApp.Domain
+namespace DecorVista.Domain
 {
     public class User
     {
-        public int Id { get; set; }
+        [Key]
+        public int id { get; set; }
+        public string username { get; set; } = string.Empty;
+        public string email { get; set; } = string.Empty;
+        public string password { get; set; } = string.Empty;
+        public UserDetails userdetails { get; set; } = new UserDetails();
+        public InteriorDesigner interiordesigner { get; set; } = new InteriorDesigner();
 
-        public string Email { get; set; }
+        public List<Consultation> consultations { get; set; } = new List<Consultation>();
 
-        public string Password { get; set; }
-
-        public string? FullName {  get; set; }
-
-        public string? Avatar {  get; set; }
-
-        public string? PhoneNumber {  get; set; }
-
-        public string? Gender { get; set; }
-
-        public DateTime? Dob { get; set; }
-
-        public string Role { get; set; } // Admin, Customer, Employee
-
-        public bool IsEmailConfirmed { get; set; }
-
-        public bool IsActive { get; set; } = true;
-
-        public DateTime CreatedAt { get; set; }
-
-        public DateTime UpdatedAt { get; set; }
-
-        public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
-
-        public virtual Permission? Permission { get; set; }
-
-
-        
-
-
-
-
-
-
+        public List<Review> reviews { get; set; } = new List<Review>();
+        public List<Cart> carts { get; set; } = new List<Cart>();
+        public List<Order> orders { get; set; } = new List<Order>();
+        public List<Subcribe> subcribes { get; set; } = new List<Subcribe>();
     }
 }
