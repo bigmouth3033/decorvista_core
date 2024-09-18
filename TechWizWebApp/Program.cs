@@ -6,6 +6,8 @@ using System.Text;
 using System.Text.Json.Serialization;
 using TechWizWebApp.Data;
 using TechWizWebApp.Hubs;
+using TechWizWebApp.Interfaces;
+using TechWizWebApp.Repositories;
 using TechWizWebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -58,6 +60,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IMailService, MailService>();
+builder.Services.AddScoped<IAuthAdmin, AuthAdminRepo>();
 
 
 

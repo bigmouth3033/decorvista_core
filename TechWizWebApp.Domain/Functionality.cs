@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DecorVista.Domain
+namespace TechWizWebApp.Domain
 {
     public class Functionality
     {

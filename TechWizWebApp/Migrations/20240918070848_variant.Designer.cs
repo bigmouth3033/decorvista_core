@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechWizWebApp.Data;
 
@@ -11,9 +12,11 @@ using TechWizWebApp.Data;
 namespace TechWizWebApp.Migrations
 {
     [DbContext(typeof(DecorVistaDbContext))]
-    partial class DecorVistaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240918070848_variant")]
+    partial class variant
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -308,27 +311,6 @@ namespace TechWizWebApp.Migrations
                     b.HasIndex("functionality_id");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("TechWizWebApp.Domain.ProductImage", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<string>("imagename")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("productid")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("productid");
-
-                    b.ToTable("ProductImage");
                 });
 
             modelBuilder.Entity("TechWizWebApp.Domain.Review", b =>
@@ -632,17 +614,6 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("functionality");
                 });
 
-            modelBuilder.Entity("TechWizWebApp.Domain.ProductImage", b =>
-                {
-                    b.HasOne("TechWizWebApp.Domain.Product", "product")
-                        .WithMany("images")
-                        .HasForeignKey("productid")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("product");
-                });
-
             modelBuilder.Entity("TechWizWebApp.Domain.Review", b =>
                 {
                     b.HasOne("TechWizWebApp.Domain.InteriorDesigner", "interiordesigner")
@@ -748,8 +719,6 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("carts");
 
                     b.Navigation("galleryDetails");
-
-                    b.Navigation("images");
 
                     b.Navigation("reviews");
 

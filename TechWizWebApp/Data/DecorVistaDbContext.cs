@@ -1,5 +1,4 @@
-﻿using DecorVista.Domain;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TechWizWebApp.Domain;
 
 namespace TechWizWebApp.Data
@@ -9,6 +8,7 @@ namespace TechWizWebApp.Data
         public DecorVistaDbContext(DbContextOptions<DecorVistaDbContext> options) : base(options)
         {
         }
+
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Consultation> Consultations { get; set; }
@@ -23,6 +23,10 @@ namespace TechWizWebApp.Data
         public DbSet<Subcribe> Subcribes { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserDetails> UserDetails { get; set; }
+        public DbSet<Variant> Variants { get; set; }
+        public DbSet<VariantAttribute> VariantAttributes { get; set; }
+
+
 
 
 
@@ -50,6 +54,7 @@ namespace TechWizWebApp.Data
                 .WithMany(d => d.consultations)
                 .HasForeignKey(c => c.designer_id)
                 .OnDelete(DeleteBehavior.NoAction);
+
             //many to many review with product and designer
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.user)
@@ -98,6 +103,22 @@ namespace TechWizWebApp.Data
                 .HasOne(p => p.functionality)
                 .WithMany(f => f.products)
                 .HasForeignKey(p => p.functionality_id)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.variants).WithOne(p => p.product)
+                .HasForeignKey(p => p.productid)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Product>()
+          .HasMany(p => p.images).WithOne(p => p.product)
+          .HasForeignKey(p => p.productid)
+          .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Variant>()
+                .HasMany(p => p.variantattributes)
+                .WithOne(p => p.variant)
+                .HasForeignKey(p => p.variantid)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Gallery>()

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace DecorVista.Domain
+namespace TechWizWebApp.Domain
 {
     public class Product
     {
@@ -25,6 +25,8 @@ namespace DecorVista.Domain
         public List<Review> reviews { get; set; } = new List<Review>();
         public List<GalleryDetails> galleryDetails { get; set; } = new List<GalleryDetails>();
         public List<Cart> carts { get; set; } = new List<Cart>();
+        public List<Variant> variants { get; set; } = new List<Variant>();
+        public List<ProductImage> images { get; set; } = new List<ProductImage>();
         [NotMapped]
         public List<IFormFile>? uploadImages { get; set; }
     }

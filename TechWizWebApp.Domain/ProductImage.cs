@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 
 namespace TechWizWebApp.Domain
 {
-    public class Subcribe
+    public class ProductImage
     {
         [Key]
         public int id { get; set; }
-        public int gallery_id { get; set; }
-        public Gallery gallery { get; set; } = new Gallery();
-        public int user_id { get; set; }
-        public User user { get; set; } = new User();
+        public int productid { get; set; }
+        public  Product? product { get; set; }
+        public string? imagename { get; set; }
     }
 }

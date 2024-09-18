@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechWizWebApp.Data;
 
@@ -11,9 +12,11 @@ using TechWizWebApp.Data;
 namespace TechWizWebApp.Migrations
 {
     [DbContext(typeof(DecorVistaDbContext))]
-    partial class DecorVistaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240918060557_add-avatar")]
+    partial class addavatar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -310,27 +313,6 @@ namespace TechWizWebApp.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("TechWizWebApp.Domain.ProductImage", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<string>("imagename")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("productid")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("productid");
-
-                    b.ToTable("ProductImage");
-                });
-
             modelBuilder.Entity("TechWizWebApp.Domain.Review", b =>
                 {
                     b.Property<int>("id")
@@ -467,59 +449,6 @@ namespace TechWizWebApp.Migrations
                     b.ToTable("UserDetails");
                 });
 
-            modelBuilder.Entity("TechWizWebApp.Domain.Variant", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<float>("price")
-                        .HasColumnType("real");
-
-                    b.Property<int>("productid")
-                        .HasColumnType("int");
-
-                    b.Property<float>("saleprice")
-                        .HasColumnType("real");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("productid");
-
-                    b.ToTable("Variants");
-                });
-
-            modelBuilder.Entity("TechWizWebApp.Domain.VariantAttribute", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<string>("attributetype")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("attributevalue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("priority")
-                        .HasColumnType("int");
-
-                    b.Property<int>("variantid")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("variantid");
-
-                    b.ToTable("VariantAttributes");
-                });
-
             modelBuilder.Entity("TechWizWebApp.Domain.Blog", b =>
                 {
                     b.HasOne("TechWizWebApp.Domain.InteriorDesigner", "interior_designer")
@@ -632,17 +561,6 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("functionality");
                 });
 
-            modelBuilder.Entity("TechWizWebApp.Domain.ProductImage", b =>
-                {
-                    b.HasOne("TechWizWebApp.Domain.Product", "product")
-                        .WithMany("images")
-                        .HasForeignKey("productid")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("product");
-                });
-
             modelBuilder.Entity("TechWizWebApp.Domain.Review", b =>
                 {
                     b.HasOne("TechWizWebApp.Domain.InteriorDesigner", "interiordesigner")
@@ -700,28 +618,6 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TechWizWebApp.Domain.Variant", b =>
-                {
-                    b.HasOne("TechWizWebApp.Domain.Product", "product")
-                        .WithMany("variants")
-                        .HasForeignKey("productid")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("product");
-                });
-
-            modelBuilder.Entity("TechWizWebApp.Domain.VariantAttribute", b =>
-                {
-                    b.HasOne("TechWizWebApp.Domain.Variant", "variant")
-                        .WithMany("variantattributes")
-                        .HasForeignKey("variantid")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("variant");
-                });
-
             modelBuilder.Entity("TechWizWebApp.Domain.Functionality", b =>
                 {
                     b.Navigation("products");
@@ -749,11 +645,7 @@ namespace TechWizWebApp.Migrations
 
                     b.Navigation("galleryDetails");
 
-                    b.Navigation("images");
-
                     b.Navigation("reviews");
-
-                    b.Navigation("variants");
                 });
 
             modelBuilder.Entity("TechWizWebApp.Domain.RoomType", b =>
@@ -767,7 +659,8 @@ namespace TechWizWebApp.Migrations
 
                     b.Navigation("consultations");
 
-                    b.Navigation("interiordesigner");
+                    b.Navigation("interiordesigner")
+                        .IsRequired();
 
                     b.Navigation("orders");
 
@@ -775,12 +668,8 @@ namespace TechWizWebApp.Migrations
 
                     b.Navigation("subcribes");
 
-                    b.Navigation("userdetails");
-                });
-
-            modelBuilder.Entity("TechWizWebApp.Domain.Variant", b =>
-                {
-                    b.Navigation("variantattributes");
+                    b.Navigation("userdetails")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
