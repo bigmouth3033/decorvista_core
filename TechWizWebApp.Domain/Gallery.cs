@@ -20,7 +20,7 @@ namespace TechWizWebApp.Domain
         public int room_type_id { get; set; }
 
         public string color_tone {  get; set; } = string.Empty;
-
+        public int? view_count {  get; set; }
         public string imageName { get; set; } = string.Empty;
         public RoomType? room_type { get; set; }
         public List<GalleryDetails> galleryDetails { get; set; } = new List<GalleryDetails>();
