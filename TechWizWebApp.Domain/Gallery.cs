@@ -23,6 +23,9 @@ namespace TechWizWebApp.Domain
         public int? view_count {  get; set; }
         public string imageName { get; set; } = string.Empty;
         public RoomType? room_type { get; set; }
+        public DateTime created_date { get; set; } = DateTime.Now;
+
+        public DateTime updated_date { get; set; } = DateTime.Now;
         public List<GalleryDetails> galleryDetails { get; set; } = new List<GalleryDetails>();
         public List<Subcribe> subcribes { get; set; } = new List<Subcribe>();        
         [NotMapped]
