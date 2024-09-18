@@ -14,7 +14,7 @@ namespace TechWizWebApp.Domain
         [Key]
         public int id { get; set; }
         public int interior_designer_id { get; set; }
-        public InteriorDesigner interior_designer { get; set; } = new InteriorDesigner();
+        public InteriorDesigner? interior_designer { get; set; } 
         public string title { get; set; } = string.Empty;
         public string content { get; set; } = string.Empty;
         public string images { get; set; } = string.Empty;

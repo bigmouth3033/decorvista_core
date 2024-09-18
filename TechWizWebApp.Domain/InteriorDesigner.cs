@@ -13,7 +13,7 @@ namespace TechWizWebApp.Domain
         [Key]        
         public int id { get; set; }
         public int user_id { get; set; }
-        public User user { get; set; } = new User();
+        public User? user { get; set; }
         public string first_name { get; set; } = string.Empty;
         public string last_name { get; set; } = string.Empty;
         public string contact_number { get; set; } = string.Empty;

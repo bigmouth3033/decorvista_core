@@ -12,7 +12,7 @@ namespace TechWizWebApp.Domain
         [Key]
         public int id { get; set; }
         public int gallery_id { get; set; }
-        public Gallery gallery { get; set; } = new Gallery();
+        public Gallery? gallery { get; set; }
         public int user_id { get; set; }
         public User user { get; set; } = new User();
     }

@@ -12,10 +12,10 @@ namespace TechWizWebApp.Domain
         [Key]
         public int id { get; set; }
         public int user_id { get; set; }
-        public User user { get; set; } = new User();
+        public User? user { get; set; }
         public int product_id { get; set; }
 
-        public Product product { get; set; } = new Product();
+        public Product? product { get; set; }
         public int quanity { get; set; }
     }
 }
