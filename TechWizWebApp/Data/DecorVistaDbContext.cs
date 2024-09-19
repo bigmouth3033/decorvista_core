@@ -17,6 +17,7 @@ namespace TechWizWebApp.Data
         public DbSet<GalleryDetails> GalleryDetails { get; set; }
         public DbSet<InteriorDesigner> InteriorDesigners { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<RoomType> RoomTypes { get; set; }
@@ -149,6 +150,19 @@ namespace TechWizWebApp.Data
                 .HasOne(b => b.interior_designer)
                 .WithMany(id => id.blogs)
                 .HasForeignKey(b => b.interior_designer_id)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            //many to many orderdetails with order and variant
+            modelBuilder.Entity<OrderDetails>()
+                .HasOne(od => od.order)
+                .WithMany(o => o.order_details)
+                .HasForeignKey(od => od.order_id)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<OrderDetails>()
+                .HasOne(od => od.variant)
+                .WithMany(v => v.order_details)
+                .HasForeignKey(od => od.variant_id)
                 .OnDelete(DeleteBehavior.NoAction);
 
             base.OnModelCreating(modelBuilder);

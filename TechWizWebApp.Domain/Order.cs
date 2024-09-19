@@ -15,6 +15,7 @@ namespace TechWizWebApp.Domain
         public int user_id { get; set; }
         public User? user { get; set; } 
         public string? status {get;set;}
+        public List<OrderDetails> order_details { get; set; } = new List<OrderDetails>();
         public DateTime created_date { get; set; } = DateTime.Now;
 
         public DateTime updated_date { get; set; } = DateTime.Now;
