@@ -16,7 +16,7 @@ namespace TechWizWebApp.Domain
         public User? user { get; set; }
         public int product_id { get; set; }
         public Product? product { get; set; }
-        public int designer_id { get; set; }
+        public int? designer_id { get; set; }
         public InteriorDesigner? interiordesigner { get; set; } 
         public float? score  { get; set; }
         public string comment { get; set; } = string.Empty;
