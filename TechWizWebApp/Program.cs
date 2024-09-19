@@ -60,6 +60,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IMailService, MailService>();
+builder.Services.AddScoped<ISeedService, SeedService>();
 builder.Services.AddScoped<IAuthAdmin, AuthAdminRepo>();
 
 

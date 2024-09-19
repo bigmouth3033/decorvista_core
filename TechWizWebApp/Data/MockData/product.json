@@ -1,0 +1,52 @@
+[
+  {
+    "id": "0",
+    "product_code": "P01",
+    "productname": "Bag Luxuries",
+    "functionality_id": 1,
+    "brand": "amazon",
+    "price": 555.5,
+    "description": "UNIQUE DESIGN: Our tote bags are made of high-quality materials.",
+    "imageName": "con cac",
+    "status": true,
+    "variants": [
+      {
+        "id": "0",
+        "price": 55353.5,
+        "saleprice": 10000.5,
+        "variantattributes": [
+          {
+            "id": 0,
+            "attributetype": "Color",
+            "attributevalue": "Red",
+            "priority": 1
+          }
+        ]
+      },
+      {
+        "id": "0",
+        "price": 2424.5,
+        "saleprice": 25252.5,
+        "variantattributes": [
+          {
+            "id": 0,
+            "attributetype": "Color",
+            "attributevalue": "Blue",
+            "priority": 1
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "id": 0,
+        "imagename": "003861d6-09ab-4753-9f01-5ce0b7b7d124.jpg"
+      },
+      {
+        "id": 0,
+        "imagename": "004db90c-2a39-44d0-9994-54f37da38960.jpg"
+      }
+    ]
+  }
+
+]

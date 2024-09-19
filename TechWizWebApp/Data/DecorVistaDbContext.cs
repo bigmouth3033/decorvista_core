@@ -165,7 +165,74 @@ namespace TechWizWebApp.Data
                 .HasForeignKey(od => od.variant_id)
                 .OnDelete(DeleteBehavior.NoAction);
 
+
+
+            //seed Functionaility
+            modelBuilder.Entity<Functionality>()
+                .HasData(
+                new Functionality
+                {
+                    id = 1,
+                    name = "Furniture",
+                }, new Functionality
+                {
+                    id = 2,
+                    name = "Lighting",
+                }, new Functionality
+                {
+                    id = 3,
+                    name = "Decor",
+                }, new Functionality
+                {
+                    id = 4,
+                    name = "Rugs and Carpets",
+                }, new Functionality
+                {
+                    id = 5,
+                    name = "Wall Art",
+                }, new Functionality { 
+                    id = 6,
+                    name = " Curtains and Blinds",
+                }
+                );
+
+            modelBuilder.Entity<RoomType>()
+                .HasData(
+                new RoomType
+                {
+                    id = 1,
+                    name = "Living Rooms"
+                },
+                new RoomType
+                {
+                    id = 2,
+                    name = "Bedrooms"
+                },
+                new RoomType
+                {
+                    id = 3,
+                    name = "Kitchens"
+                },
+                new RoomType
+                {
+                    id = 4,
+                    name = "Bathrooms"
+                },
+                new RoomType
+                {
+                    id = 5,
+                    name = "Offices"
+                },
+                new RoomType
+                {
+                    id = 6,
+                    name = "Outdoor Spaces"
+                }
+                );
+
             base.OnModelCreating(modelBuilder);
         }
+
+        
     }
 }

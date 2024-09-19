@@ -10,11 +10,13 @@ namespace TechWizWebApp.Controllers
     {
         private readonly IFileService _fileService;
         private readonly IMailService _mailService;
+        private readonly ISeedService _seedService;
 
-        public TestController(IFileService fileService,IMailService mailService)
+        public TestController(IFileService fileService,IMailService mailService, ISeedService seedService)
         {
             _fileService = fileService;
             _mailService = mailService;
+            _seedService = seedService;
         }
 
         [HttpPost("testUploadFile")]
@@ -28,6 +30,13 @@ namespace TechWizWebApp.Controllers
         public async  Task<IActionResult> TestSendMail(string emailReceiver, string subject, string message)
         {
             _mailService.SendMailAsync(emailReceiver, subject, message);
+            return Ok("");
+        }
+
+        [HttpGet("TestSeedProduct")]
+        public IActionResult TestSeedProduct()
+        {
+            _seedService.SeedProduct();
             return Ok("");
         }
         
