@@ -12,6 +12,7 @@ namespace TechWizWebApp.Domain
     {
         public string id { get; set; } = string.Empty;
         public int total { get; set; }
+        public string address { get; set; } = string.Empty;
         public int user_id { get; set; }
         public User? user { get; set; } 
         public string? status {get;set;}
