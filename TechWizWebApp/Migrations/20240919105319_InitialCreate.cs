@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace TechWizWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -43,7 +45,6 @@ namespace TechWizWebApp.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -87,7 +88,11 @@ namespace TechWizWebApp.Migrations
                     description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     status = table.Column<bool>(type: "bit", nullable: false),
                     room_type_id = table.Column<int>(type: "int", nullable: false),
-                    imageName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    color_tone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    view_count = table.Column<int>(type: "int", nullable: true),
+                    imageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    created_date = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    updated_date = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -132,8 +137,11 @@ namespace TechWizWebApp.Migrations
                 columns: table => new
                 {
                     id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    total = table.Column<int>(type: "int", nullable: false),
-                    user_id = table.Column<int>(type: "int", nullable: false)
+                    total = table.Column<float>(type: "real", nullable: false),
+                    user_id = table.Column<int>(type: "int", nullable: false),
+                    status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    updated_date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -157,7 +165,8 @@ namespace TechWizWebApp.Migrations
                     first_name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     last_name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     contact_number = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    address = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    avatar = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -192,6 +201,45 @@ namespace TechWizWebApp.Migrations
                         name: "FK_Carts_Users_user_id",
                         column: x => x.user_id,
                         principalTable: "Users",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductImage",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    productid = table.Column<int>(type: "int", nullable: false),
+                    imagename = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductImage", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_ProductImage_Products_productid",
+                        column: x => x.productid,
+                        principalTable: "Products",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Variants",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    productid = table.Column<int>(type: "int", nullable: false),
+                    price = table.Column<float>(type: "real", nullable: false),
+                    saleprice = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Variants", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Variants_Products_productid",
+                        column: x => x.productid,
+                        principalTable: "Products",
                         principalColumn: "id");
                 });
 
@@ -302,9 +350,10 @@ namespace TechWizWebApp.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     user_id = table.Column<int>(type: "int", nullable: false),
-                    product_id = table.Column<int>(type: "int", nullable: false),
-                    designer_id = table.Column<int>(type: "int", nullable: false),
-                    comment = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    product_id = table.Column<int>(type: "int", nullable: true),
+                    designer_id = table.Column<int>(type: "int", nullable: true),
+                    comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    score = table.Column<float>(type: "real", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -324,6 +373,78 @@ namespace TechWizWebApp.Migrations
                         column: x => x.user_id,
                         principalTable: "Users",
                         principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderDetails",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    order_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    variant_id = table.Column<int>(type: "int", nullable: false),
+                    quanity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetails", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Orders_order_id",
+                        column: x => x.order_id,
+                        principalTable: "Orders",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Variants_variant_id",
+                        column: x => x.variant_id,
+                        principalTable: "Variants",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "VariantAttributes",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    variantid = table.Column<int>(type: "int", nullable: false),
+                    attributetype = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    priority = table.Column<int>(type: "int", nullable: false),
+                    attributevalue = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VariantAttributes", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_VariantAttributes_Variants_variantid",
+                        column: x => x.variantid,
+                        principalTable: "Variants",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "Functionalities",
+                columns: new[] { "id", "name" },
+                values: new object[,]
+                {
+                    { 1, "Furniture" },
+                    { 2, "Lighting" },
+                    { 3, "Decor" },
+                    { 4, "Rugs and Carpets" },
+                    { 5, "Wall Art" },
+                    { 6, " Curtains and Blinds" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "RoomTypes",
+                columns: new[] { "id", "name" },
+                values: new object[,]
+                {
+                    { 1, "Living Rooms" },
+                    { 2, "Bedrooms" },
+                    { 3, "Kitchens" },
+                    { 4, "Bathrooms" },
+                    { 5, "Offices" },
+                    { 6, "Outdoor Spaces" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -373,9 +494,24 @@ namespace TechWizWebApp.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_order_id",
+                table: "OrderDetails",
+                column: "order_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_variant_id",
+                table: "OrderDetails",
+                column: "variant_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_user_id",
                 table: "Orders",
                 column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductImage_productid",
+                table: "ProductImage",
+                column: "productid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_functionality_id",
@@ -412,6 +548,16 @@ namespace TechWizWebApp.Migrations
                 table: "UserDetails",
                 column: "user_id",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VariantAttributes_variantid",
+                table: "VariantAttributes",
+                column: "variantid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Variants_productid",
+                table: "Variants",
+                column: "productid");
         }
 
         /// <inheritdoc />
@@ -430,7 +576,10 @@ namespace TechWizWebApp.Migrations
                 name: "GalleryDetails");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "OrderDetails");
+
+            migrationBuilder.DropTable(
+                name: "ProductImage");
 
             migrationBuilder.DropTable(
                 name: "Reviews");
@@ -442,22 +591,31 @@ namespace TechWizWebApp.Migrations
                 name: "UserDetails");
 
             migrationBuilder.DropTable(
-                name: "InteriorDesigners");
+                name: "VariantAttributes");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "InteriorDesigners");
 
             migrationBuilder.DropTable(
                 name: "Galleries");
 
             migrationBuilder.DropTable(
+                name: "Variants");
+
+            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Functionalities");
+                name: "RoomTypes");
 
             migrationBuilder.DropTable(
-                name: "RoomTypes");
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Functionalities");
         }
     }
 }

@@ -25,10 +25,10 @@ namespace TechWizWebApp.Services
 
             var jsonContent = System.IO.File.ReadAllText(jsonEntityPath);
 
-            var product = JsonConvert.DeserializeObject<List<Product>>(jsonContent);
-
-            _dbContext.Products.AddRange(product);
+            var products = JsonConvert.DeserializeObject<List<Product>>(jsonContent);
+            
+            _dbContext.Products.AddRange(products);
             _dbContext.SaveChanges();
-        }
+         }
     }
 }

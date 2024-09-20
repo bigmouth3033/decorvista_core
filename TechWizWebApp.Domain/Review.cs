@@ -14,10 +14,11 @@ namespace TechWizWebApp.Domain
         public int id { get; set; }
         public int user_id { get; set; }
         public User? user { get; set; }
-        public int product_id { get; set; }
+        public int? product_id { get; set; }
         public Product? product { get; set; }
-        public int designer_id { get; set; }
+        public int? designer_id { get; set; }
         public InteriorDesigner? interiordesigner { get; set; } 
         public string comment { get; set; } = string.Empty;
+        public float? score { get; set; }
     }
 }

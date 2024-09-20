@@ -12,8 +12,8 @@ using TechWizWebApp.Data;
 namespace TechWizWebApp.Migrations
 {
     [DbContext(typeof(DecorVistaDbContext))]
-    [Migration("20240918053741_init")]
-    partial class init
+    [Migration("20240919105319_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace TechWizWebApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DecorVista.Domain.Blog", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.Blog", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -64,7 +64,7 @@ namespace TechWizWebApp.Migrations
                     b.ToTable("Blogs");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Cart", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.Cart", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -90,7 +90,7 @@ namespace TechWizWebApp.Migrations
                     b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Consultation", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.Consultation", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -124,7 +124,7 @@ namespace TechWizWebApp.Migrations
                     b.ToTable("Consultations");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Functionality", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.Functionality", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -139,15 +139,54 @@ namespace TechWizWebApp.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Functionalities");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            name = "Furniture"
+                        },
+                        new
+                        {
+                            id = 2,
+                            name = "Lighting"
+                        },
+                        new
+                        {
+                            id = 3,
+                            name = "Decor"
+                        },
+                        new
+                        {
+                            id = 4,
+                            name = "Rugs and Carpets"
+                        },
+                        new
+                        {
+                            id = 5,
+                            name = "Wall Art"
+                        },
+                        new
+                        {
+                            id = 6,
+                            name = " Curtains and Blinds"
+                        });
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Gallery", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.Gallery", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("color_tone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("created_date")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("description")
                         .IsRequired()
@@ -167,6 +206,12 @@ namespace TechWizWebApp.Migrations
                     b.Property<bool>("status")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("updated_date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("view_count")
+                        .HasColumnType("int");
+
                     b.HasKey("id");
 
                     b.HasIndex("room_type_id");
@@ -174,7 +219,7 @@ namespace TechWizWebApp.Migrations
                     b.ToTable("Galleries");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.GalleryDetails", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.GalleryDetails", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -197,7 +242,7 @@ namespace TechWizWebApp.Migrations
                     b.ToTable("GalleryDetails");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.InteriorDesigner", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.InteriorDesigner", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -251,13 +296,22 @@ namespace TechWizWebApp.Migrations
                     b.ToTable("InteriorDesigners");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Order", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.Order", b =>
                 {
                     b.Property<string>("id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("total")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("created_date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("total")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("updated_date")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("user_id")
                         .HasColumnType("int");
@@ -269,7 +323,34 @@ namespace TechWizWebApp.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Product", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.OrderDetails", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("order_id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("quanity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("variant_id")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("order_id");
+
+                    b.HasIndex("variant_id");
+
+                    b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("TechWizWebApp.Domain.Product", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -313,7 +394,28 @@ namespace TechWizWebApp.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Review", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.ProductImage", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("imagename")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("productid")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("productid");
+
+                    b.ToTable("ProductImage");
+                });
+
+            modelBuilder.Entity("TechWizWebApp.Domain.Review", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -325,11 +427,14 @@ namespace TechWizWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("designer_id")
+                    b.Property<int?>("designer_id")
                         .HasColumnType("int");
 
-                    b.Property<int>("product_id")
+                    b.Property<int?>("product_id")
                         .HasColumnType("int");
+
+                    b.Property<float?>("score")
+                        .HasColumnType("real");
 
                     b.Property<int>("user_id")
                         .HasColumnType("int");
@@ -345,7 +450,7 @@ namespace TechWizWebApp.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.RoomType", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.RoomType", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -360,9 +465,41 @@ namespace TechWizWebApp.Migrations
                     b.HasKey("id");
 
                     b.ToTable("RoomTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            name = "Living Rooms"
+                        },
+                        new
+                        {
+                            id = 2,
+                            name = "Bedrooms"
+                        },
+                        new
+                        {
+                            id = 3,
+                            name = "Kitchens"
+                        },
+                        new
+                        {
+                            id = 4,
+                            name = "Bathrooms"
+                        },
+                        new
+                        {
+                            id = 5,
+                            name = "Offices"
+                        },
+                        new
+                        {
+                            id = 6,
+                            name = "Outdoor Spaces"
+                        });
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Subcribe", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.Subcribe", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -385,7 +522,7 @@ namespace TechWizWebApp.Migrations
                     b.ToTable("Subcribes");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.User", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.User", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -401,16 +538,12 @@ namespace TechWizWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("id");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.UserDetails", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.UserDetails", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -419,6 +552,10 @@ namespace TechWizWebApp.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<string>("address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("avatar")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -449,9 +586,62 @@ namespace TechWizWebApp.Migrations
                     b.ToTable("UserDetails");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Blog", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.Variant", b =>
                 {
-                    b.HasOne("DecorVista.Domain.InteriorDesigner", "interior_designer")
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<float>("price")
+                        .HasColumnType("real");
+
+                    b.Property<int>("productid")
+                        .HasColumnType("int");
+
+                    b.Property<float>("saleprice")
+                        .HasColumnType("real");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("productid");
+
+                    b.ToTable("Variants");
+                });
+
+            modelBuilder.Entity("TechWizWebApp.Domain.VariantAttribute", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("attributetype")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("attributevalue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("priority")
+                        .HasColumnType("int");
+
+                    b.Property<int>("variantid")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("variantid");
+
+                    b.ToTable("VariantAttributes");
+                });
+
+            modelBuilder.Entity("TechWizWebApp.Domain.Blog", b =>
+                {
+                    b.HasOne("TechWizWebApp.Domain.InteriorDesigner", "interior_designer")
                         .WithMany("blogs")
                         .HasForeignKey("interior_designer_id")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -460,15 +650,15 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("interior_designer");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Cart", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.Cart", b =>
                 {
-                    b.HasOne("DecorVista.Domain.Product", "product")
+                    b.HasOne("TechWizWebApp.Domain.Product", "product")
                         .WithMany("carts")
                         .HasForeignKey("product_id")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("DecorVista.Domain.User", "user")
+                    b.HasOne("TechWizWebApp.Domain.User", "user")
                         .WithMany("carts")
                         .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -479,15 +669,15 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Consultation", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.Consultation", b =>
                 {
-                    b.HasOne("DecorVista.Domain.InteriorDesigner", "interior_designer")
+                    b.HasOne("TechWizWebApp.Domain.InteriorDesigner", "interior_designer")
                         .WithMany("consultations")
                         .HasForeignKey("designer_id")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("DecorVista.Domain.User", "user")
+                    b.HasOne("TechWizWebApp.Domain.User", "user")
                         .WithMany("consultations")
                         .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -498,9 +688,9 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Gallery", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.Gallery", b =>
                 {
-                    b.HasOne("DecorVista.Domain.RoomType", "room_type")
+                    b.HasOne("TechWizWebApp.Domain.RoomType", "room_type")
                         .WithMany("galleries")
                         .HasForeignKey("room_type_id")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -509,15 +699,15 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("room_type");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.GalleryDetails", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.GalleryDetails", b =>
                 {
-                    b.HasOne("DecorVista.Domain.Gallery", "gallery")
+                    b.HasOne("TechWizWebApp.Domain.Gallery", "gallery")
                         .WithMany("galleryDetails")
                         .HasForeignKey("gallery_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DecorVista.Domain.Product", "product")
+                    b.HasOne("TechWizWebApp.Domain.Product", "product")
                         .WithMany("galleryDetails")
                         .HasForeignKey("product_id")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -528,20 +718,20 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("product");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.InteriorDesigner", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.InteriorDesigner", b =>
                 {
-                    b.HasOne("DecorVista.Domain.User", "user")
+                    b.HasOne("TechWizWebApp.Domain.User", "user")
                         .WithOne("interiordesigner")
-                        .HasForeignKey("DecorVista.Domain.InteriorDesigner", "user_id")
+                        .HasForeignKey("TechWizWebApp.Domain.InteriorDesigner", "user_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Order", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.Order", b =>
                 {
-                    b.HasOne("DecorVista.Domain.User", "user")
+                    b.HasOne("TechWizWebApp.Domain.User", "user")
                         .WithMany("orders")
                         .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -550,9 +740,28 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Product", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.OrderDetails", b =>
                 {
-                    b.HasOne("DecorVista.Domain.Functionality", "functionality")
+                    b.HasOne("TechWizWebApp.Domain.Order", "order")
+                        .WithMany("order_details")
+                        .HasForeignKey("order_id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("TechWizWebApp.Domain.Variant", "variant")
+                        .WithMany("order_details")
+                        .HasForeignKey("variant_id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("order");
+
+                    b.Navigation("variant");
+                });
+
+            modelBuilder.Entity("TechWizWebApp.Domain.Product", b =>
+                {
+                    b.HasOne("TechWizWebApp.Domain.Functionality", "functionality")
                         .WithMany("products")
                         .HasForeignKey("functionality_id")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -561,21 +770,30 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("functionality");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Review", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.ProductImage", b =>
                 {
-                    b.HasOne("DecorVista.Domain.InteriorDesigner", "interiordesigner")
+                    b.HasOne("TechWizWebApp.Domain.Product", "product")
+                        .WithMany("images")
+                        .HasForeignKey("productid")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("product");
+                });
+
+            modelBuilder.Entity("TechWizWebApp.Domain.Review", b =>
+                {
+                    b.HasOne("TechWizWebApp.Domain.InteriorDesigner", "interiordesigner")
                         .WithMany("reviews")
                         .HasForeignKey("designer_id")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("DecorVista.Domain.Product", "product")
+                    b.HasOne("TechWizWebApp.Domain.Product", "product")
                         .WithMany("reviews")
                         .HasForeignKey("product_id")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("DecorVista.Domain.User", "user")
+                    b.HasOne("TechWizWebApp.Domain.User", "user")
                         .WithMany("reviews")
                         .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -588,15 +806,15 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Subcribe", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.Subcribe", b =>
                 {
-                    b.HasOne("DecorVista.Domain.Gallery", "gallery")
+                    b.HasOne("TechWizWebApp.Domain.Gallery", "gallery")
                         .WithMany("subcribes")
                         .HasForeignKey("gallery_id")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("DecorVista.Domain.User", "user")
+                    b.HasOne("TechWizWebApp.Domain.User", "user")
                         .WithMany("subcribes")
                         .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -607,30 +825,52 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.UserDetails", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.UserDetails", b =>
                 {
-                    b.HasOne("DecorVista.Domain.User", "User")
+                    b.HasOne("TechWizWebApp.Domain.User", "User")
                         .WithOne("userdetails")
-                        .HasForeignKey("DecorVista.Domain.UserDetails", "user_id")
+                        .HasForeignKey("TechWizWebApp.Domain.UserDetails", "user_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Functionality", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.Variant", b =>
+                {
+                    b.HasOne("TechWizWebApp.Domain.Product", "product")
+                        .WithMany("variants")
+                        .HasForeignKey("productid")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("product");
+                });
+
+            modelBuilder.Entity("TechWizWebApp.Domain.VariantAttribute", b =>
+                {
+                    b.HasOne("TechWizWebApp.Domain.Variant", "variant")
+                        .WithMany("variantattributes")
+                        .HasForeignKey("variantid")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("variant");
+                });
+
+            modelBuilder.Entity("TechWizWebApp.Domain.Functionality", b =>
                 {
                     b.Navigation("products");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Gallery", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.Gallery", b =>
                 {
                     b.Navigation("galleryDetails");
 
                     b.Navigation("subcribes");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.InteriorDesigner", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.InteriorDesigner", b =>
                 {
                     b.Navigation("blogs");
 
@@ -639,28 +879,36 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("reviews");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.Product", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.Order", b =>
+                {
+                    b.Navigation("order_details");
+                });
+
+            modelBuilder.Entity("TechWizWebApp.Domain.Product", b =>
                 {
                     b.Navigation("carts");
 
                     b.Navigation("galleryDetails");
 
+                    b.Navigation("images");
+
                     b.Navigation("reviews");
+
+                    b.Navigation("variants");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.RoomType", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.RoomType", b =>
                 {
                     b.Navigation("galleries");
                 });
 
-            modelBuilder.Entity("DecorVista.Domain.User", b =>
+            modelBuilder.Entity("TechWizWebApp.Domain.User", b =>
                 {
                     b.Navigation("carts");
 
                     b.Navigation("consultations");
 
-                    b.Navigation("interiordesigner")
-                        .IsRequired();
+                    b.Navigation("interiordesigner");
 
                     b.Navigation("orders");
 
@@ -668,8 +916,14 @@ namespace TechWizWebApp.Migrations
 
                     b.Navigation("subcribes");
 
-                    b.Navigation("userdetails")
-                        .IsRequired();
+                    b.Navigation("userdetails");
+                });
+
+            modelBuilder.Entity("TechWizWebApp.Domain.Variant", b =>
+                {
+                    b.Navigation("order_details");
+
+                    b.Navigation("variantattributes");
                 });
 #pragma warning restore 612, 618
         }

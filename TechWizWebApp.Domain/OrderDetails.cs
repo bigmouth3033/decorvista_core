@@ -12,6 +12,7 @@ namespace TechWizWebApp.Domain
         public string order_id { get; set; } = string.Empty;
         public Order? order { get; set; }
         public int variant_id { get; set; }
-        public Variant? variant { get; set; }
+        public Variant? variant { get; set; } 
+        public int quanity { get; set; }
     }
 }

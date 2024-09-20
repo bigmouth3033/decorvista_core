@@ -5,14 +5,14 @@
 namespace TechWizWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class addavatar : Migration
+    public partial class addadress : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "avatar",
-                table: "UserDetails",
+                name: "address",
+                table: "Orders",
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
@@ -22,8 +22,8 @@ namespace TechWizWebApp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "avatar",
-                table: "UserDetails");
+                name: "address",
+                table: "Orders");
         }
     }
 }

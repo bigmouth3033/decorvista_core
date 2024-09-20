@@ -26,8 +26,8 @@ namespace TechWizWebApp.Domain
         public DateTime? created_date { get; set; }
 
         public DateTime? updated_date { get; set; }
-        public List<GalleryDetails> galleryDetails { get; set; } = new List<GalleryDetails>();
-        public List<Subcribe> subcribes { get; set; } = new List<Subcribe>();        
+        public List<GalleryDetails>? galleryDetails { get; set; }
+        public List<Subcribe>? subcribes { get; set; }
         [NotMapped]
         public List<IFormFile>? uploadImages { get; set; }
     }

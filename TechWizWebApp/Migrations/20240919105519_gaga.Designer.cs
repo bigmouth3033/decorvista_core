@@ -12,8 +12,8 @@ using TechWizWebApp.Data;
 namespace TechWizWebApp.Migrations
 {
     [DbContext(typeof(DecorVistaDbContext))]
-    [Migration("20240918070848_variant")]
-    partial class variant
+    [Migration("20240919105519_gaga")]
+    partial class gaga
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -139,6 +139,38 @@ namespace TechWizWebApp.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Functionalities");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            name = "Furniture"
+                        },
+                        new
+                        {
+                            id = 2,
+                            name = "Lighting"
+                        },
+                        new
+                        {
+                            id = 3,
+                            name = "Decor"
+                        },
+                        new
+                        {
+                            id = 4,
+                            name = "Rugs and Carpets"
+                        },
+                        new
+                        {
+                            id = 5,
+                            name = "Wall Art"
+                        },
+                        new
+                        {
+                            id = 6,
+                            name = " Curtains and Blinds"
+                        });
                 });
 
             modelBuilder.Entity("TechWizWebApp.Domain.Gallery", b =>
@@ -148,6 +180,13 @@ namespace TechWizWebApp.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("color_tone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("created_date")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("description")
                         .IsRequired()
@@ -166,6 +205,12 @@ namespace TechWizWebApp.Migrations
 
                     b.Property<bool>("status")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("updated_date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("view_count")
+                        .HasColumnType("int");
 
                     b.HasKey("id");
 
@@ -256,8 +301,17 @@ namespace TechWizWebApp.Migrations
                     b.Property<string>("id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("total")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("created_date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("total")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("updated_date")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("user_id")
                         .HasColumnType("int");
@@ -267,6 +321,33 @@ namespace TechWizWebApp.Migrations
                     b.HasIndex("user_id");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("TechWizWebApp.Domain.OrderDetails", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("order_id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("quanity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("variant_id")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("order_id");
+
+                    b.HasIndex("variant_id");
+
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("TechWizWebApp.Domain.Product", b =>
@@ -313,6 +394,27 @@ namespace TechWizWebApp.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("TechWizWebApp.Domain.ProductImage", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("imagename")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("productid")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("productid");
+
+                    b.ToTable("ProductImage");
+                });
+
             modelBuilder.Entity("TechWizWebApp.Domain.Review", b =>
                 {
                     b.Property<int>("id")
@@ -325,11 +427,14 @@ namespace TechWizWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("designer_id")
+                    b.Property<int?>("designer_id")
                         .HasColumnType("int");
 
-                    b.Property<int>("product_id")
+                    b.Property<int?>("product_id")
                         .HasColumnType("int");
+
+                    b.Property<float?>("score")
+                        .HasColumnType("real");
 
                     b.Property<int>("user_id")
                         .HasColumnType("int");
@@ -360,6 +465,38 @@ namespace TechWizWebApp.Migrations
                     b.HasKey("id");
 
                     b.ToTable("RoomTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            name = "Living Rooms"
+                        },
+                        new
+                        {
+                            id = 2,
+                            name = "Bedrooms"
+                        },
+                        new
+                        {
+                            id = 3,
+                            name = "Kitchens"
+                        },
+                        new
+                        {
+                            id = 4,
+                            name = "Bathrooms"
+                        },
+                        new
+                        {
+                            id = 5,
+                            name = "Offices"
+                        },
+                        new
+                        {
+                            id = 6,
+                            name = "Outdoor Spaces"
+                        });
                 });
 
             modelBuilder.Entity("TechWizWebApp.Domain.Subcribe", b =>
@@ -404,6 +541,14 @@ namespace TechWizWebApp.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            email = "nhan@gmail.com",
+                            password = "$2a$12$K5G6UeW/IlCkJ5bdx2vETuDZnU.g17EraXMy86JPexo1qi4HzPaVa"
+                        });
                 });
 
             modelBuilder.Entity("TechWizWebApp.Domain.UserDetails", b =>
@@ -603,6 +748,25 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("user");
                 });
 
+            modelBuilder.Entity("TechWizWebApp.Domain.OrderDetails", b =>
+                {
+                    b.HasOne("TechWizWebApp.Domain.Order", "order")
+                        .WithMany("order_details")
+                        .HasForeignKey("order_id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("TechWizWebApp.Domain.Variant", "variant")
+                        .WithMany("order_details")
+                        .HasForeignKey("variant_id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("order");
+
+                    b.Navigation("variant");
+                });
+
             modelBuilder.Entity("TechWizWebApp.Domain.Product", b =>
                 {
                     b.HasOne("TechWizWebApp.Domain.Functionality", "functionality")
@@ -614,19 +778,28 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("functionality");
                 });
 
+            modelBuilder.Entity("TechWizWebApp.Domain.ProductImage", b =>
+                {
+                    b.HasOne("TechWizWebApp.Domain.Product", "product")
+                        .WithMany("images")
+                        .HasForeignKey("productid")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("product");
+                });
+
             modelBuilder.Entity("TechWizWebApp.Domain.Review", b =>
                 {
                     b.HasOne("TechWizWebApp.Domain.InteriorDesigner", "interiordesigner")
                         .WithMany("reviews")
                         .HasForeignKey("designer_id")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("TechWizWebApp.Domain.Product", "product")
                         .WithMany("reviews")
                         .HasForeignKey("product_id")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("TechWizWebApp.Domain.User", "user")
                         .WithMany("reviews")
@@ -714,11 +887,18 @@ namespace TechWizWebApp.Migrations
                     b.Navigation("reviews");
                 });
 
+            modelBuilder.Entity("TechWizWebApp.Domain.Order", b =>
+                {
+                    b.Navigation("order_details");
+                });
+
             modelBuilder.Entity("TechWizWebApp.Domain.Product", b =>
                 {
                     b.Navigation("carts");
 
                     b.Navigation("galleryDetails");
+
+                    b.Navigation("images");
 
                     b.Navigation("reviews");
 
@@ -749,6 +929,8 @@ namespace TechWizWebApp.Migrations
 
             modelBuilder.Entity("TechWizWebApp.Domain.Variant", b =>
                 {
+                    b.Navigation("order_details");
+
                     b.Navigation("variantattributes");
                 });
 #pragma warning restore 612, 618

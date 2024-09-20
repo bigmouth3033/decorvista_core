@@ -168,6 +168,16 @@ namespace TechWizWebApp.Data
 
 
             //seed Functionaility
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    id = 1,
+                    email = "nhan@gmail.com",
+                    password= "$2a$12$K5G6UeW/IlCkJ5bdx2vETuDZnU.g17EraXMy86JPexo1qi4HzPaVa"
+                }
+                );
+
+
             modelBuilder.Entity<Functionality>()
                 .HasData(
                 new Functionality

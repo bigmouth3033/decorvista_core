@@ -16,18 +16,33 @@ namespace TechWizWebApp.Domain
         public string product_code { get; set; } = string.Empty;
         public string productname { get; set; } = string.Empty;
         public int functionality_id { get; set; }
-        public Functionality functionality { get; set; } = new Functionality();
+        public Functionality? functionality { get; set; }
         public string brand { get; set; } = string.Empty;
         public float price { get; set; }
         public string description { get; set; } = string.Empty;
         public string imageName { get; set; } = string.Empty;
         public bool status { get; set; }
-        public List<Review> reviews { get; set; } = new List<Review>();
-        public List<GalleryDetails> galleryDetails { get; set; } = new List<GalleryDetails>();
-        public List<Cart> carts { get; set; } = new List<Cart>();
-        public List<Variant> variants { get; set; } = new List<Variant>();
-        public List<ProductImage> images { get; set; } = new List<ProductImage>();
+        public List<Review>? reviews { get; set; }
+        public List<GalleryDetails>? galleryDetails { get; set; } 
+        public List<Cart>? carts { get; set; }
+        public List<Variant>? variants { get; set; } 
+        public List<ProductImage>? images { get; set; } 
         [NotMapped]
         public List<IFormFile>? uploadImages { get; set; }
+
+
+        [NotMapped]
+        public string _productCode
+        {
+            get
+            {
+                return GetProductCode();
+            }
+        }
+        public string GetProductCode()
+        {
+            string productCode = $"P_{functionality?.name}_{brand}_{id}";
+            return productCode;
+        }
     }
 }
