@@ -14,5 +14,7 @@ namespace TechWizWebApp.Domain
         public string name { get; set; } = string.Empty;
         public List<Gallery> galleries { get; set; } = new List<Gallery>();
 
+        public string? url {  get; set; }
+
     }
 }

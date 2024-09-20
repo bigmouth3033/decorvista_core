@@ -10,12 +10,14 @@ namespace TechWizWebApp.Domain
 {
     public class Order
     {
-        public string id { get; set; } = string.Empty;
-        public int total { get; set; }
+        [Key]
+        public string id { get; set; } = Guid.NewGuid().ToString();
+        public float total { get; set; }
         public string address { get; set; } = string.Empty;
         public int user_id { get; set; }
         public User? user { get; set; }
-        public string? status { get; set; }
+        public string? status { get; set; } // packaged, delivery, completed
+       
         public List<OrderDetails> order_details { get; set; } = new List<OrderDetails>();
         public DateTime created_date { get; set; } = DateTime.Now;
 

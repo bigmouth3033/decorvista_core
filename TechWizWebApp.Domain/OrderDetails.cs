@@ -13,6 +13,10 @@ namespace TechWizWebApp.Domain
         public Order? order { get; set; }
         public int variant_id { get; set; }
         public Variant? variant { get; set; }
+       
+
+
+        public int quanity {  get; set; }
     }
 
 }

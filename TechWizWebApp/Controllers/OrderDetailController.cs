@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TechWizWebApp.Data;
 using WebApplication1.Interface;
 
 namespace WebApplication1.Controllers
@@ -10,10 +12,14 @@ namespace WebApplication1.Controllers
     public class OrderDetailController : ControllerBase
     {
         private IOrderDetails _orderDetails;
-        public OrderDetailController(IOrderDetails orderDetails)
+        private readonly DecorVistaDbContext _context;
+        public OrderDetailController(IOrderDetails orderDetails, DecorVistaDbContext decorVistaDbContext)
         {
             _orderDetails   = orderDetails;
+            _context = decorVistaDbContext;
         }
+
+
         [HttpGet("GetByOrderId/{orderId}")]
         public async Task<ActionResult> GetByOrderId (string orderId)
         {
@@ -26,6 +32,24 @@ namespace WebApplication1.Controllers
             {
                 return BadRequest(result);
             }
+        }
+
+        // Nhan viet
+        [HttpGet]
+        public async Task<IActionResult> GetOrderDetailsByOrderId(string orderId)
+        {
+            var orderDetails = await _context.OrderDetails
+                .Include(od => od.order)
+                .Include(od => od.variant)
+                .Where(od => od.order_id == orderId)
+
+                .ToListAsync();
+            return Ok(new CustomResult
+            {
+                data = orderDetails,
+                Message = "oke",
+                Status = 200
+            });
         }
     }
 }

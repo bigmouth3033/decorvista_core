@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TechWizWebApp.Data;
 using TechWizWebApp.Domain;
 using WebApplication1.Interface;
 
@@ -10,9 +12,11 @@ namespace WebApplication1.Controllers
     public class GalleryController : ControllerBase
     {
         private IGallery _gallery;
-        public GalleryController(IGallery gallery)
+        private readonly DecorVistaDbContext _context;
+        public GalleryController(IGallery gallery, DecorVistaDbContext decorVistaDbContext)
         {
             _gallery = gallery;
+            _context = decorVistaDbContext;
         }
 
 
@@ -84,6 +88,72 @@ namespace WebApplication1.Controllers
             {
                 return BadRequest(result);
             }
+        }
+
+        //  Nhan viet
+        [HttpGet]
+        public async Task<IActionResult> GetGalleryByProductId(int productId)
+        {
+            var product = await _context.Products
+                .Include(p => p.galleryDetails)
+                .ThenInclude(gd => gd.gallery)
+                .Where(p => p.id == productId)
+                .FirstOrDefaultAsync();
+
+
+            if (product?.galleryDetails == null)
+            {
+                return Ok(new CustomResult
+                {
+                    data = null,
+                    Message = "nothing",
+                    Status = 400
+                });
+            }
+
+
+            var products = await _context.Products
+                .Include(p => p.functionality)
+                .Include(p => p.galleryDetails)
+                .ThenInclude(gd => gd.gallery)
+                .Where(p => p.galleryDetails.Any(gd => gd.gallery_id == product.galleryDetails[0].gallery_id && gd.product_id != productId))
+                .ToListAsync();
+
+
+            return Ok(new CustomResult
+            {
+                data = products,
+                Message = "OK",
+                Status = 200
+            });
+        }
+
+        //  Nhan viet
+        [HttpPost]
+        public async Task<IActionResult> CreateGallery()
+        {
+            Gallery gallery = new Gallery();
+            gallery.gallery_name = "Summer";
+            gallery.description = "Bo suu tap cho mua he";
+            gallery.status = true;
+            gallery.room_type_id = 1;
+            gallery.color_tone = "Red";
+            gallery.view_count = 5252;
+            gallery.imageName = "00152aff-f675-4fa2-bb0a-cef158ea4fc7.png";
+
+            int[] productIds = [1, 2, 3];
+            List<GalleryDetails> galleriesDetails = new List<GalleryDetails>();
+            foreach (int item in productIds)
+            {
+                GalleryDetails galleryDetails = new GalleryDetails();
+                galleryDetails.product_id = item;
+                galleryDetails.gallery = gallery;
+                galleriesDetails.Add(galleryDetails);
+            }
+
+            _context.AddRange(galleriesDetails);
+            _context.SaveChanges();
+            return Ok("");
         }
     }
 }

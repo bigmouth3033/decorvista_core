@@ -41,7 +41,7 @@ namespace TechWizWebApp.Domain
         }
         public string GetProductCode()
         {
-            string productCode = $"P_{functionality.name}_{brand}_{id}";
+            string productCode = $"P_{functionality?.name}_{brand}_{id}";
             return productCode;
         }
     }
