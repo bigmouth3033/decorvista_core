@@ -95,6 +95,10 @@ namespace TechWizWebApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<string>("address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("designer_id")
                         .HasColumnType("int");
 
@@ -106,8 +110,9 @@ namespace TechWizWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("status")
-                        .HasColumnType("int");
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("user_id")
                         .HasColumnType("int");
@@ -210,6 +215,13 @@ namespace TechWizWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("approved_status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("avatar")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("contact_number")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -282,6 +294,9 @@ namespace TechWizWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("created_at")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -293,9 +308,6 @@ namespace TechWizWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("price")
-                        .HasColumnType("real");
-
                     b.Property<string>("product_code")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -306,6 +318,9 @@ namespace TechWizWebApp.Migrations
 
                     b.Property<bool>("status")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("updated_at")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("id");
 
@@ -332,7 +347,7 @@ namespace TechWizWebApp.Migrations
 
                     b.HasIndex("productid");
 
-                    b.ToTable("ProductImage");
+                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("TechWizWebApp.Domain.Review", b =>

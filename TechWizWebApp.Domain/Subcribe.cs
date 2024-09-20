@@ -14,6 +14,6 @@ namespace TechWizWebApp.Domain
         public int gallery_id { get; set; }
         public Gallery? gallery { get; set; }
         public int user_id { get; set; }
-        public User user { get; set; } = new User();
+        public User? user { get; set; }
     }
 }

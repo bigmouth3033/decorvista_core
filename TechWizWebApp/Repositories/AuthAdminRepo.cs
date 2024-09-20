@@ -25,15 +25,34 @@ namespace TechWizWebApp.Repositories
         {
             try
             {
-                var user = await _context.Users.Include(u => u.userdetails).Where(u => u.email == email).SingleOrDefaultAsync();
+                var user = await _context.Users.Include(u => u.interiordesigner).Include(u => u.userdetails).Where(u => u.email == email).SingleOrDefaultAsync();
 
                 if (user != null && BCrypt.Net.BCrypt.Verify(password, user.password))
                 {
-                    if (user.userdetails.role == "admin")
+                    if (user.userdetails != null && user.userdetails.role == "admin")
                     {
                         var token = CreateToken(user);
 
                         return new CustomResult(200, "token", token);
+                    }
+
+                    if(user.interiordesigner != null)
+                    {
+                        if(user.interiordesigner.approved_status != "approved")
+                        {
+                            return new CustomResult(403, "This account is not approved to become designer", null);
+                        }
+
+                        if (user.interiordesigner.status == false)
+                        {
+                            return new CustomResult(403, "This account is not active", null);
+                        }
+
+                        var token = CreateToken(user);
+
+                        return new CustomResult(200, "token", token);
+
+
                     }
 
                     return new CustomResult(401, "Unauthorized", null);
@@ -56,7 +75,7 @@ namespace TechWizWebApp.Repositories
             var claims = new[]
             {
                 new Claim(ClaimTypes.Email, user.email),
-                new Claim(ClaimTypes.Role, user.userdetails.role),
+                new Claim(ClaimTypes.Role, user.userdetails != null ? user.userdetails.role : "designer" ),
                 new Claim("Id", user.id.ToString()),
             };
 
@@ -75,7 +94,7 @@ namespace TechWizWebApp.Repositories
         {
             try
             {
-                var admin = await _context.Users.Include(u => u.userdetails).SingleOrDefaultAsync(u => u.id == userId);
+                var admin = await _context.Users.Include(u => u.interiordesigner).Include(u => u.userdetails).SingleOrDefaultAsync(u => u.id == userId);
 
                 if (admin != null)
                 {

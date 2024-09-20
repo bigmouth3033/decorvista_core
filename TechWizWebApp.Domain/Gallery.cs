@@ -27,5 +27,11 @@ namespace TechWizWebApp.Domain
         public List<Subcribe> subcribes { get; set; } = new List<Subcribe>();        
         [NotMapped]
         public List<IFormFile>? uploadImages { get; set; }
+
+        public DateTime? created_date { get; set; } 
+
+        public DateTime? updated_date { get; set;}
+
+
     }
 }

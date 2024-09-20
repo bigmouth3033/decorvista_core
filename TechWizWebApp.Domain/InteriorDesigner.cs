@@ -22,7 +22,9 @@ namespace TechWizWebApp.Domain
         public string specialization { get; set; } = string.Empty;
         public string portfolio { get; set; } = string.Empty;
         public string daywork { get; set; } = string.Empty;
+        public string avatar {  get; set; } = string.Empty;
         public bool status { get; set; }
+        public string? approved_status {  get; set; }
         public List<Review> reviews { get; set; } = new List<Review>();
         public List<Consultation> consultations { get; set; } = new List<Consultation>();
         public List<Blog> blogs { get; set; } = new List<Blog>();

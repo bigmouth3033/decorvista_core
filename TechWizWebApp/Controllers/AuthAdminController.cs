@@ -29,7 +29,7 @@ namespace TechWizWebApp.Controllers
 
         [HttpGet]
         [Route("admin")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, designer")]
         public async Task<IActionResult> GetAdmin()
         {
             var idClaim = User.Claims.FirstOrDefault(c => c.Type == "Id").Value;

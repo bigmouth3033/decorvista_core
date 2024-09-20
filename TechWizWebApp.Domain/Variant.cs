@@ -16,5 +16,7 @@ namespace TechWizWebApp.Domain
         public float price { get; set; }
         public float saleprice { get; set; }
         public List<VariantAttribute> variantattributes { get; set; } = new List<VariantAttribute>();
+
+        public List<OrderDetails> order_details { get; set; } = new List<OrderDetails>();
     }
 }

@@ -9,6 +9,8 @@ using TechWizWebApp.Hubs;
 using TechWizWebApp.Interfaces;
 using TechWizWebApp.Repositories;
 using TechWizWebApp.Services;
+using WebApplication1.Interface;
+using WebApplication1.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,7 +63,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddScoped<IAuthAdmin, AuthAdminRepo>();
-
+builder.Services.AddScoped<IProductAdmin, ProductAdminRepo>();
+builder.Services.AddScoped<IDesignerAdmin, DesignerAdminRepo>();
+builder.Services.AddScoped<IConsultationAdmin, ConsultationAdminRepo>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<IGallery, GalleryRepo>();
+builder.Services.AddTransient<IRoomType, TypeRoomRepo>();
+builder.Services.AddTransient<IOrder, OrderRepo>();
+builder.Services.AddTransient<IOrderDetails, OrderDetailRepo>();
 
 
 var app = builder.Build();

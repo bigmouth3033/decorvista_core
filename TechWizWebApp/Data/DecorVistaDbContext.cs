@@ -25,8 +25,9 @@ namespace TechWizWebApp.Data
         public DbSet<UserDetails> UserDetails { get; set; }
         public DbSet<Variant> Variants { get; set; }
         public DbSet<VariantAttribute> VariantAttributes { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
 
-
+        public DbSet<OrderDetails> OrderDetails { get; set; }
 
 
 
@@ -149,6 +150,20 @@ namespace TechWizWebApp.Data
                 .HasOne(b => b.interior_designer)
                 .WithMany(id => id.blogs)
                 .HasForeignKey(b => b.interior_designer_id)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Product>().HasMany(p => p.images).WithOne(i => i.product).HasForeignKey(i => i.productid).OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<OrderDetails>()
+    .HasOne(od => od.order)
+    .WithMany(o => o.order_details)
+    .HasForeignKey(od => od.order_id)
+    .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<OrderDetails>()
+                .HasOne(od => od.variant)
+                .WithMany(v => v.order_details)
+                .HasForeignKey(od => od.variant_id)
                 .OnDelete(DeleteBehavior.NoAction);
 
             base.OnModelCreating(modelBuilder);
