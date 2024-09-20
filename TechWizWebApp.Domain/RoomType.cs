@@ -12,6 +12,7 @@ namespace TechWizWebApp.Domain
         [Key] 
         public int id { get; set; }
         public string name { get; set; } = string.Empty;
+        public string? url { get; set; }
         public List<Gallery> galleries { get; set; } = new List<Gallery>();
 
     }
