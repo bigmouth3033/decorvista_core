@@ -13,5 +13,13 @@ namespace TechWizWebApp.Domain
         public int id { get; set; }
         public string name { get; set; } =string.Empty;
         public List<Product> products { get; set; } = new List<Product>();
+        [NotMapped]
+public int? productCount
+{
+    get
+    {
+        return products?.Count;
+    }
+}
     }
 }
