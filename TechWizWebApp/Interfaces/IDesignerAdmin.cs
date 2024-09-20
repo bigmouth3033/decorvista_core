@@ -1,4 +1,5 @@
-﻿using TechWizWebApp.Domain;
+﻿using TechWizWebApp.Data;
+using TechWizWebApp.Domain;
 using TechWizWebApp.RequestModels;
 
 namespace TechWizWebApp.Interfaces

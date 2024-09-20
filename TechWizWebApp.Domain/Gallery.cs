@@ -32,6 +32,7 @@ namespace TechWizWebApp.Domain
 
         public DateTime? updated_date { get; set;}
 
-
+        [NotMapped]
+        public List<int>? product_list { get; set; }
     }
 }

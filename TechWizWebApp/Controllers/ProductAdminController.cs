@@ -29,10 +29,20 @@ namespace TechWizWebApp.Controllers
         [Authorize(Roles = "admin")]
         [HttpGet]
         [Route("get_products")]
-        public async Task<IActionResult> GetProductList([FromQuery] int pageNumber, [FromQuery] int pageSize )
+        public async Task<IActionResult> GetProductList([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] bool active, [FromQuery] IEnumerable<int> functionalityId, [FromQuery] IEnumerable<string> brand, [FromQuery] string search = "")
         {
-            var customPaging = await _productAdmin.GetProductList(pageNumber, pageSize);
+            var customPaging = await _productAdmin.GetProductList(pageNumber, pageSize, active, functionalityId, brand, search);
             return Ok(customPaging);
         }
+
+        [Authorize(Roles = "admin")]
+        [HttpGet]
+        [Route("GetSelect")]
+        public async Task<IActionResult> GetSelect()
+        {
+            var customPaging = await _productAdmin.GetProductSelect();
+            return Ok(customPaging);
+        }
+
     }
 }

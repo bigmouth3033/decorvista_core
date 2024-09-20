@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using TechWizWebApp.Data;
+using TechWizWebApp.Services;
 using WebApplication1.Interface;
 
 namespace WebApplication1.Repository
@@ -10,9 +11,11 @@ namespace WebApplication1.Repository
     public class OrderDetailRepo : IOrderDetails
     {
         private DecorVistaDbContext _dbContext;
-        public OrderDetailRepo(DecorVistaDbContext decorVistaDbContext)
+        private readonly IFileService _fileService;
+        public OrderDetailRepo(DecorVistaDbContext decorVistaDbContext, IFileService fileService)
         {
                 _dbContext = decorVistaDbContext;
+                _fileService = fileService;
         }
         public async Task<CustomResult> GetByOrderId(string orderId)
         {

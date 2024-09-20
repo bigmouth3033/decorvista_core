@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Linq;
 using TechWizWebApp.Data;
 using TechWizWebApp.Domain;
 using TechWizWebApp.Interfaces;
@@ -97,7 +98,7 @@ namespace TechWizWebApp.Repositories
 
         }
 
-        public async Task<CustomPaging> GetProductList(int pageNumber, int pageSize)
+        public async Task<CustomPaging> GetProductList(int pageNumber, int pageSize, bool active, IEnumerable<int> functionalityId, IEnumerable<string> brand, string search)
         {
             try
             {
@@ -105,7 +106,22 @@ namespace TechWizWebApp.Repositories
 
                 query = _context.Products;
 
-                query = query.Where(p => p.status == true);
+                query = query.Where(p => p.status == active);
+
+                if(search != null)
+                {
+                    query = query.Where(p => p.productname.Contains(search));
+                }
+
+                if (functionalityId.Count() != 0)
+                {
+                    query = query.Where(p => functionalityId.Contains(p.functionality_id));
+                }
+
+                if (brand.Count() != 0)
+                {
+                    query = query.Where(p => brand.Contains(p.brand));
+                }
 
                 var total = query.Count();
 
@@ -142,5 +158,33 @@ namespace TechWizWebApp.Repositories
                 };
             }
         }
+
+        public async Task<CustomResult> GetProductSelect()
+        {
+            try {
+                var list = await _context.Products.Select(e=> new ProductSelect() { 
+                    value = e.id,
+                    label = e.productname
+                }).ToListAsync();
+                return new CustomResult()
+                {
+                    Status = 200,
+                    data = list
+                };
+            }
+            catch(Exception ex) { return new CustomResult() { 
+                Status = 400,
+                Message=ex.Message,
+               
+            }; }
+        }
+
+        private class ProductSelect()
+        {
+            public int? value {  get; set; }
+
+            public string? label { get; set; }
+        }
     }
+    
 }

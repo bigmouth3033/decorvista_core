@@ -1,6 +1,6 @@
-﻿using DecorVista.Domain;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TechWizWebApp.Domain;
 using WebApplication1.Interface;
 
 namespace WebApplication1.Controllers
@@ -15,6 +15,7 @@ namespace WebApplication1.Controllers
             _gallery = gallery;
         }
 
+
         [HttpPost("createNew")] 
         public async Task<ActionResult> Create([FromForm] Gallery gallery)
         {
@@ -28,6 +29,7 @@ namespace WebApplication1.Controllers
                 return BadRequest(result);
             }
         }
+
         [HttpGet("GetAll")]
 
         public async Task<ActionResult> GetAll()

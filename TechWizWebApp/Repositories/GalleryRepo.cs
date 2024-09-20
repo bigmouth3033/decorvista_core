@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using TechWizWebApp.Data;
+using TechWizWebApp.Domain;
+using TechWizWebApp.Services;
 using WebApplication1.Interface;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -12,19 +14,26 @@ namespace WebApplication1.Repository
         private DecorVistaDbContext _context;
         private IWebHostEnvironment _env;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public GalleryRepo(DecorVistaDbContext context, IWebHostEnvironment env , IHttpContextAccessor httpContextAccessor)
+
+        private readonly IFileService _fileService;
+        private readonly IMailService _mailService;
+
+        public GalleryRepo(DecorVistaDbContext context, IWebHostEnvironment env, IHttpContextAccessor httpContextAccessor, IFileService fileService, IMailService mailService)
         {
             _context = context;
             _env = env;
             _httpContextAccessor = httpContextAccessor;
+            _fileService = fileService;
+            _mailService = mailService;
         }
 
 
         public async Task<CustomResult> ChangeStatus(int id)
         {
-            try {
-                var data = await _context.Galleries.SingleOrDefaultAsync(e=>e.id == id);
-                data!.status=!data.status;
+            try
+            {
+                var data = await _context.Galleries.SingleOrDefaultAsync(e => e.id == id);
+                data!.status = !data.status;
                 _context.Galleries.Update(data);
                 await _context.SaveChangesAsync();
                 return new CustomResult()
@@ -38,35 +47,44 @@ namespace WebApplication1.Repository
                 return new CustomResult()
                 {
                     Status = 400,
-                    Message = "Server Error!" +ex.InnerException.Message,
+                    Message = "Server Error!" + ex.InnerException.Message,
                 };
             }
         }
 
-        public async Task<CustomResult>  Create(TechWizWebApp.Domain.Gallery e)
+        public async Task<CustomResult> Create(TechWizWebApp.Domain.Gallery e)
         {
-            try {
-                    e.created_date = DateTime.Now;
-                    foreach (var item in e.uploadImages)
-                    {
-                        var filename = GetUniqueFilename(item.FileName);
-                        var upload = Path.Combine(_env.WebRootPath, "GalleryImage");
-                        var filePath = Path.Combine(upload, filename);
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await item.CopyToAsync(stream);
-                        }
-                        e.imageName = e.imageName + "; " + filename;
-                    }
+            try
+            {
+                e.created_date = DateTime.Now;
+                foreach (var item in e.uploadImages)
+                {
+                    var filename = await _fileService.UploadImageAsync(item);
+
+                    e.imageName = e.imageName + "; " + filename;
+                }
                 e.status = false;
                 _context.Galleries.Add(e);
+
+                foreach(var id in e.product_list)
+                {
+                    var newGalleryDetail = new GalleryDetails();
+
+                    newGalleryDetail.gallery = e;
+                    newGalleryDetail.product_id = id;
+
+                    _context.GalleryDetails.Add(newGalleryDetail);
+                }
+
                 await _context.SaveChangesAsync();
-                return new CustomResult() { 
+                return new CustomResult()
+                {
                     Status = 200,
                     Message = "Create Success."
                 };
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 return new CustomResult()
                 {
                     Status = 400,
@@ -77,9 +95,11 @@ namespace WebApplication1.Repository
 
         public async Task<CustomResult> GetAll()
         {
-            try {
-                var list = await _context.Galleries.Include(e=>e.room_type).ToListAsync();
-                return new CustomResult() {
+            try
+            {
+                var list = await _context.Galleries.Include(e => e.room_type).ToListAsync();
+                return new CustomResult()
+                {
                     Status = 200,
                     data = list
                 };
@@ -89,15 +109,16 @@ namespace WebApplication1.Repository
                 return new CustomResult()
                 {
                     Status = 400,
-                   Message = "Server Error." + ex.InnerException?.Message
+                    Message = "Server Error." + ex.InnerException?.Message
                 };
             }
         }
 
         public async Task<CustomResult> GetById(int id)
         {
-            try {
-                var data = await _context.Galleries.SingleOrDefaultAsync(e=>e.id == id);
+            try
+            {
+                var data = await _context.Galleries.SingleOrDefaultAsync(e => e.id == id);
                 return new CustomResult()
                 {
                     Status = 200,
@@ -109,7 +130,7 @@ namespace WebApplication1.Repository
                 return new CustomResult()
                 {
                     Status = 400,
-                    Message ="Server Error!"
+                    Message = "Server Error!"
                 };
             }
         }
@@ -123,23 +144,18 @@ namespace WebApplication1.Repository
         {
             try
             {
-               
-                var oldData = await _context.Galleries.SingleOrDefaultAsync(a=>a.id==e.id);
+
+                var oldData = await _context.Galleries.SingleOrDefaultAsync(a => a.id == e.id);
                 if (e.uploadImages != null)
                 {
                     foreach (var item in e.uploadImages)
                     {
-                        var filename = GetUniqueFilename(item.FileName);
-                        var upload = Path.Combine(_env.WebRootPath, "GalleryImage");
-                        var filePath = Path.Combine(upload, filename);
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await item.CopyToAsync(stream);
-                        }
+                        var filename = await _fileService.UploadImageAsync(item);
+
                         e.imageName = e.imageName + "; " + filename;
                     }
                 }
-                
+
                 oldData.id = e.id;
                 oldData.imageName = e.imageName;
                 oldData.gallery_name = e.gallery_name;
