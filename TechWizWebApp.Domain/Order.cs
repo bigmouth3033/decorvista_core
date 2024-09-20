@@ -10,7 +10,7 @@ namespace TechWizWebApp.Domain
 {
     public class Order
     {
-        public string id { get; set; } = string.Empty;
+        public string id { get; set; } = Guid.NewGuid().ToString();
         public int total { get; set; }
         public string address { get; set; } = string.Empty;
         public int user_id { get; set; }
